@@ -1,15 +1,13 @@
 import fastify from 'fastify'
+import { authMiddleware } from '../middlewares/auth'
+import { auth } from './routes/auth'
 
 const server = fastify()
 
-server.get('/ping', async (request, reply) => {
-  return 'pong\n'
-})
+server.register(auth, { prefix: '/auth' })
 
-server.listen({ port: 8080 }, (err, address) => {
-  if (err) {
-    console.error(err)
-    process.exit(1)
-  }
-  console.log(`Server listening at ${address}`)
+server.addHook('preHandler', authMiddleware)
+
+server.listen({ port: 3333 }).then((port) => {
+  console.log(`Running at: ${port}`)
 })
