@@ -1,0 +1,23 @@
+{
+  "name": "castfy",
+  "version": "1.0.0",
+  "description": "\"# castfy\"",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node index.js",
+    "dev": "npx tsx watch src/http/server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "5.11.0",
+    "fastify": "^4.26.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.29",
+    "prisma": "5.11.0",
+    "typescript": "^5.4.2"
+  }
+}
