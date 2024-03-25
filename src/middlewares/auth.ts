@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify'
 import jwt from 'jsonwebtoken'
 
 type JwtPayload = {
-  id: string
+  userId: string
 }
 
 export const authMiddleware = (
@@ -18,9 +18,9 @@ export const authMiddleware = (
 
   const token = authorization.split(' ')[1]
 
-  const { id } = jwt.verify(token, process.env.JWT_PASS ?? '') as JwtPayload
+  const { userId } = jwt.verify(token, process.env.JWT_PASS ?? '') as JwtPayload
 
-  req.headers.userId = id
+  req.headers.userId = userId
 
   done()
 }

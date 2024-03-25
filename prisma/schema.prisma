@@ -14,8 +14,16 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique()
-  password String
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique()
+  password  String
+  gender    Gender
+  birthDate DateTime
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  NON_BINARY @map("NON-BINARY")
 }

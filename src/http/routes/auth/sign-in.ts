@@ -30,8 +30,6 @@ export async function handleSignIn(req: FastifyRequest, res: FastifyReply) {
 
   const token = jsonwebtoken.sign(user.id, process.env.JWT_PASS ?? '')
 
-  console.log(token)
-
   res.status(201).send({
     id: user.id,
     email: user.email,
