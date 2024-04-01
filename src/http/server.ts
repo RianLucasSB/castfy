@@ -10,6 +10,6 @@ server.register(authHandler, { prefix: '/auth' })
 
 server.register(fileHandler, { prefix: '/file' })
 
-server.listen({ port }).then((port) => {
+server.listen({ port, host: '0.0.0.0' }).then((port) => {
   console.log(`Running at: ${port}`)
 })
