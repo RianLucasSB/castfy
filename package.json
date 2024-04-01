@@ -2,10 +2,10 @@
   "name": "castfy",
   "version": "1.0.0",
   "description": "\"# castfy\"",
-  "main": "index.js",
+  "main": "src/http/server.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "start": "node index.js",
+    "build": "tsc -p .",
+    "start": "node dist/http/server.js",
     "dev": "npx tsx watch src/http/server.ts"
   },
   "keywords": [],
