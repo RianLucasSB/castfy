@@ -3,7 +3,6 @@ import { z } from 'zod'
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { badRequest } from '../../../presentation/helpers/http-helpers'
 import { MissingParamError } from '../../../presentation/errors/missing-param-error'
-import { WritableStream } from 'node:stream/web'
 import console from 'node:console'
 
 export async function handleDownloadFile(
