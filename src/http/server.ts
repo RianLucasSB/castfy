@@ -15,4 +15,5 @@ server.register(fileHandler, { prefix: '/file' })
 
 server.listen({ port, host: '0.0.0.0' }).then((port) => {
   console.log(`Running at: ${port}`)
+  console.log(process.env.JWT_PASS)
 })
