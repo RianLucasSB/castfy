@@ -1,5 +1,4 @@
 import fastify from 'fastify'
-import { authMiddleware } from '../middlewares/auth'
 import { authHandler } from './routes/auth'
 import { fileHandler } from './routes/file'
 
@@ -9,11 +8,8 @@ const server = fastify()
 
 server.register(authHandler, { prefix: '/auth' })
 
-server.addHook('preHandler', authMiddleware)
-
 server.register(fileHandler, { prefix: '/file' })
 
-server.listen({ port, host: '0.0.0.0' }).then((port) => {
+server.listen({ port }).then((port) => {
   console.log(`Running at: ${port}`)
-  console.log(process.env.JWT_PASS)
 })
