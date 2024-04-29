@@ -7,6 +7,7 @@ import { episodeHandler } from './routes/episode'
 import { podcastHandler } from './routes/podcast'
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 8080
+const host = process.env.NODE_ENV === 'development' ? 'localhost' : '0.0.0.0'
 
 const server = fastify()
 
@@ -29,6 +30,6 @@ server.register(episodeHandler, { prefix: '/episode' })
 
 server.register(podcastHandler, { prefix: '/podcast' })
 
-server.listen({ port }).then((port) => {
+server.listen({ port, host }).then((port) => {
   console.log(`Running at: ${port}`)
 })
