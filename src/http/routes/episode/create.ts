@@ -54,8 +54,6 @@ export async function createEpisodeHandler(
 
   const userId = req.headers.userId
 
-  console.log(userId)
-
   if (!userId) return
 
   const podcast = await prisma.podcast.findUnique({
