@@ -3,6 +3,8 @@ import multipart from '@fastify/multipart'
 import cors from '@fastify/cors'
 import { authHandler } from './routes/auth'
 import { fileHandler } from './routes/file'
+import { episodeHandler } from './routes/episode'
+import { podcastHandler } from './routes/podcast'
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 8080
 
@@ -23,6 +25,10 @@ server.register(authHandler, { prefix: '/auth' })
 
 server.register(fileHandler, { prefix: '/file' })
 
-server.listen({ port, host: '0.0.0.0' }).then((port) => {
+server.register(episodeHandler, { prefix: '/episode' })
+
+server.register(podcastHandler, { prefix: '/podcast' })
+
+server.listen({ port }).then((port) => {
   console.log(`Running at: ${port}`)
 })

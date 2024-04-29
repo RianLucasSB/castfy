@@ -12,15 +12,15 @@ export async function handleUploadFile(req: FastifyRequest, res: FastifyReply) {
 
   const uploadToS3 = new Upload({
     client: s3Client,
-    leavePartsOnError: false, // optional manually handle dropped parts
+    leavePartsOnError: false,
     params: {
-      Bucket: process.env.AWS_BUCKET, // whatever your bucket is in S3
-      Key: data?.filename, // file name
-      Body: pass, // Body is stream which enables streaming
+      Bucket: process.env.AWS_BUCKET,
+      Key: data?.filename,
+      Body: pass,
       ContentType: 'audio/mp3',
     },
-    queueSize: 4, // optional concurrency configuration
-    partSize: 1024 * 1024 * 5, // optional size of each part, in bytes, at least 5MB
+    queueSize: 4,
+    partSize: 1024 * 1024 * 5,
   })
 
   uploadToS3.on('httpUploadProgress', (progress) => {
@@ -28,8 +28,6 @@ export async function handleUploadFile(req: FastifyRequest, res: FastifyReply) {
   })
 
   pipelineAsync(data!.file, pass)
-
-  await uploadToS3.done()
 
   res.status(201).send('upload successfull')
 }

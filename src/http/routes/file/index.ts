@@ -1,6 +1,5 @@
 import { FastifyInstance } from 'fastify'
 import { handleDownloadFile } from './download'
-import { authMiddleware } from '../../../middlewares/auth'
 import { handleUploadFile } from './upload'
 
 export async function fileHandler(app: FastifyInstance) {

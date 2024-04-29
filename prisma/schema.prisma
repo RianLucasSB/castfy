@@ -23,12 +23,23 @@ model User {
   podcast   Podcast?
 }
 
-model File {
-  id        String   @id @default(uuid())
+model Image {
+  id        String    @id @default(uuid())
+  url       String
   key       String
   name      String
-  createdAt DateTime @default(now())
-  Episode   Episode?
+  createdAt DateTime  @default(now())
+  Podcast   Podcast[]
+  Episode   Episode[]
+}
+
+model AudioFile {
+  id        String    @id @default(uuid())
+  url       String
+  key       String
+  name      String
+  createdAt DateTime  @default(now())
+  Episode   Episode[]
 }
 
 model Podcast {
@@ -38,18 +49,22 @@ model Podcast {
   createdAt   DateTime  @default(now())
   user        User      @relation(fields: [userId], references: [id])
   userId      String    @unique
+  image       Image     @relation(fields: [imageId], references: [id])
   episodes    Episode[]
+  imageId     String
 }
 
 model Episode {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   title       String
   description String
-  createdAt   DateTime @default(now())
-  podcast     Podcast  @relation(fields: [podcastId], references: [id])
-  podcastId   String   @unique
-  file        File     @relation(fields: [fileId], references: [id])
-  fileId      String   @unique
+  createdAt   DateTime  @default(now())
+  podcast     Podcast   @relation(fields: [podcastId], references: [id])
+  podcastId   String    @unique
+  image       Image     @relation(fields: [imageId], references: [id])
+  imageId     String
+  audioFile   AudioFile @relation(fields: [audioFileId], references: [id])
+  audioFileId String
 }
 
 enum Gender {

@@ -1,9 +1,6 @@
 import { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify'
 import jwt from 'jsonwebtoken'
-
-type JwtPayload = {
-  userId: string
-}
+import { ServerError } from '../presentation/errors/server-error'
 
 export const authMiddleware = (
   req: FastifyRequest,
@@ -18,9 +15,9 @@ export const authMiddleware = (
 
   const token = authorization.split(' ')[1]
 
-  const { userId } = jwt.verify(token, process.env.JWT_PASS ?? '') as JwtPayload
-
-  req.headers.userId = userId
+  const userId = jwt.verify(token, process.env.JWT_PASS ?? '')
+  if (!userId) return new ServerError()
+  req.headers.userId = userId as string
 
   done()
 }
