@@ -14,13 +14,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique()
-  password  String
-  gender    Gender
-  birthDate DateTime
-  podcast   Podcast?
+  id                String      @id @default(uuid())
+  name              String
+  email             String      @unique()
+  password          String
+  gender            Gender
+  birthDate         DateTime
+  podcast           Podcast?
+  resetAccountToken String?
+  VerifyCode        VerifyCode?
 }
 
 model Image {
@@ -65,6 +67,13 @@ model Episode {
   imageId     String
   audioFile   AudioFile @relation(fields: [audioFileId], references: [id])
   audioFileId String
+}
+
+model VerifyCode {
+  user    User   @relation(fields: [userId], references: [id])
+  code    String
+  expires BigInt
+  userId  String @id
 }
 
 enum Gender {

@@ -32,9 +32,7 @@ export async function handleSignUp(req: FastifyRequest, res: FastifyReply) {
     },
   })
 
-  const token = jwt.sign({ userId: created.id }, process.env.JWT_PASS ?? '', {
-    expiresIn: '7d',
-  })
+  const token = jwt.sign(created.id, process.env.JWT_PASS ?? '')
 
   return res.status(201).send({
     id: created.id,

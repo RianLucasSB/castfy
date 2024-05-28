@@ -11,8 +11,6 @@ export async function handlePlayAudio(req: FastifyRequest, res: FastifyReply) {
     audioFileId: z.string(),
   })
 
-  console.log('asdasd')
-
   const { audioFileId } = paramsObj.parse(req.params)
 
   if (!audioFileId) {
@@ -22,8 +20,6 @@ export async function handlePlayAudio(req: FastifyRequest, res: FastifyReply) {
   const audioFile = await prisma.audioFile.findUnique({
     where: { id: audioFileId },
   })
-
-  console.log(audioFile)
 
   const { Body: audioStream } = await s3Client.send(
     new GetObjectCommand({
