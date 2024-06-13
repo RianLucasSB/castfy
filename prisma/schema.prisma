@@ -14,15 +14,16 @@ datasource db {
 }
 
 model User {
-  id                String      @id @default(uuid())
+  id                String                     @id @default(uuid())
   name              String
-  email             String      @unique()
+  email             String                     @unique()
   password          String
   gender            Gender
   birthDate         DateTime
   podcast           Podcast?
   resetAccountToken String?
   VerifyCode        VerifyCode?
+  favoritesEpisodes FavoritesEpisodesOnUsers[]
 }
 
 model Image {
@@ -57,16 +58,26 @@ model Podcast {
 }
 
 model Episode {
-  id          String    @id @default(uuid())
-  title       String
-  description String
-  createdAt   DateTime  @default(now())
-  podcast     Podcast   @relation(fields: [podcastId], references: [id])
-  podcastId   String
-  image       Image     @relation(fields: [imageId], references: [id])
-  imageId     String
-  audioFile   AudioFile @relation(fields: [audioFileId], references: [id])
-  audioFileId String
+  id             String                     @id @default(uuid())
+  title          String
+  description    String
+  createdAt      DateTime                   @default(now())
+  podcast        Podcast                    @relation(fields: [podcastId], references: [id])
+  podcastId      String
+  image          Image                      @relation(fields: [imageId], references: [id])
+  imageId        String
+  audioFile      AudioFile                  @relation(fields: [audioFileId], references: [id])
+  audioFileId    String
+  usersFavorites FavoritesEpisodesOnUsers[]
+}
+
+model FavoritesEpisodesOnUsers {
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  episode   Episode @relation(fields: [episodeId], references: [id])
+  episodeId String
+
+  @@id([userId, episodeId])
 }
 
 model VerifyCode {
