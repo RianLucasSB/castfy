@@ -12,11 +12,54 @@ export async function handleListUserHome(
       userId,
     },
     select: {
-      episode: true,
+      episode: {
+        select: {
+          id: true,
+          description: true,
+          title: true,
+          podcast: {
+            select: {
+              description: true,
+              id: true,
+              image: {
+                select: {
+                  url: true,
+                },
+              },
+            },
+          },
+          image: {
+            select: {
+              url: true,
+            },
+          },
+        },
+      },
     },
   })
 
   const lastEpisodes = await prisma.episode.findMany({
+    select: {
+      id: true,
+      description: true,
+      title: true,
+      podcast: {
+        select: {
+          description: true,
+          id: true,
+          image: {
+            select: {
+              url: true,
+            },
+          },
+        },
+      },
+      image: {
+        select: {
+          url: true,
+        },
+      },
+    },
     orderBy: {
       createdAt: 'desc',
     },
