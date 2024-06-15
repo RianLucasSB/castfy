@@ -66,8 +66,7 @@ export async function handleForgotPassword(
 
   transporter.sendMail({
     from: process.env.MAIL_USERNAME,
-    to: 'rianlucas2014@gmail.com',
-    // to: user.email,
+    to: user.email,
     subject: 'Forgot password',
     text: `Codigo para recuperar senha: ${code}`,
   })
