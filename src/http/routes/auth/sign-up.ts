@@ -37,5 +37,6 @@ export async function handleSignUp(req: FastifyRequest, res: FastifyReply) {
   return res.status(201).send({
     id: created.id,
     token,
+    userHasPodcast: false,
   })
 }

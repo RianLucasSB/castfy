@@ -16,6 +16,9 @@ export async function handleSignIn(req: FastifyRequest, res: FastifyReply) {
     where: {
       email,
     },
+    include: {
+      podcast: true,
+    },
   })
 
   if (!user) {
@@ -30,10 +33,13 @@ export async function handleSignIn(req: FastifyRequest, res: FastifyReply) {
 
   const token = jsonwebtoken.sign(user.id, process.env.JWT_PASS ?? '')
 
+  const userHasPodcast = !!user.podcast
+
   res.status(201).send({
     id: user.id,
     email: user.email,
     name: user.name,
+    userHasPodcast,
     token,
   })
 }
