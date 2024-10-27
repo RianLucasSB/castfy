@@ -1,5 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { prisma } from '../../../lib/prisma'
+import { notFound } from '../../../presentation/helpers/http-helpers'
+import { BadRequestError } from '../../../presentation/errors/bad-request-error'
 
 export async function findPodcastByUserId(
   req: FastifyRequest,
@@ -17,5 +19,27 @@ export async function findPodcastByUserId(
     },
   })
 
-  res.status(201).send(podcast)
+  if(!podcast){
+    return res.status(404).send(notFound(new BadRequestError(`Podcast não encontrado`)))
+  }
+
+  const podcastImageUrl = await prisma.image.findUnique({where: {id: podcast.imageId}})
+
+  const episodes = await Promise.all(podcast.episodes.map(async episode => {
+    const image = await prisma.image.findUnique({where: {id: episode.imageId}})
+    
+    return {
+      imageUrl: image?.url,
+      ...episode
+    }
+  }))
+
+  res.status(201).send({
+    id: podcast.id,
+    description: podcast.description,
+    createdAt: podcast.createdAt,
+    ownerId: podcast.userId,
+    imageUrl: podcastImageUrl,
+    episodes,
+  })
 }

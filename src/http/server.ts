@@ -5,6 +5,7 @@ import { authHandler } from './routes/auth'
 import { fileHandler } from './routes/file'
 import { episodeHandler } from './routes/episode'
 import { podcastHandler } from './routes/podcast'
+require('dotenv').config()
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 8080
 const host = process.env.NODE_ENV === 'development' ? 'localhost' : '0.0.0.0'
