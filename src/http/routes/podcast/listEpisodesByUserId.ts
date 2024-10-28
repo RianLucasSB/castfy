@@ -23,7 +23,7 @@ export async function findPodcastByUserId(
     return res.status(404).send(notFound(new BadRequestError(`Podcast não encontrado`)))
   }
 
-  const podcastImageUrl = await prisma.image.findUnique({where: {id: podcast.imageId}})
+  const podcastImage = await prisma.image.findUnique({where: {id: podcast.imageId}})
 
   const episodes = await Promise.all(podcast.episodes.map(async episode => {
     const image = await prisma.image.findUnique({where: {id: episode.imageId}})
@@ -39,7 +39,8 @@ export async function findPodcastByUserId(
     description: podcast.description,
     createdAt: podcast.createdAt,
     ownerId: podcast.userId,
-    imageUrl: podcastImageUrl,
+    imageUrl: podcastImage?.url,
+    name: podcast.name,
     episodes,
   })
 }

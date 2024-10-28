@@ -25,7 +25,7 @@ export async function findPodcastById(req: FastifyRequest, res: FastifyReply) {
     return res.status(404).send(notFound(new BadRequestError(`Podcast não encontrado`)))
   }
 
-  const podcastImageUrl = await prisma.image.findUnique({where: {id: podcast.imageId}})
+  const podcastImage = await prisma.image.findUnique({where: {id: podcast.imageId}})
 
 
   const episodes = await Promise.all(podcast.episodes.map(async episode => {
@@ -42,7 +42,8 @@ export async function findPodcastById(req: FastifyRequest, res: FastifyReply) {
     description: podcast.description,
     createdAt: podcast.createdAt,
     ownerId: podcast.userId,
-    imageUrl: podcastImageUrl?.url,
+    imageUrl: podcastImage?.url,
+    name: podcast.name,
     episodes,
   })
 }
