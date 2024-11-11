@@ -15,6 +15,13 @@ export const notFound = (error: Error): HttpResponse => {
   }
 }
 
+export const forbidden = (error: Error): HttpResponse => {
+  return {
+    statusCode: 403,
+    body: error,
+  }
+}
+
 export const serverError = (): HttpResponse => {
   return {
     statusCode: 500,

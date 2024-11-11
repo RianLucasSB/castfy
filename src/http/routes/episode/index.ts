@@ -8,6 +8,9 @@ import { handleFindAllEpisode } from './findAll'
 import { handleListUserHome } from './listUserHome'
 import { handleMarkAsFavorite } from './markAsFavorite'
 import { handleUnmarkAsFavorite } from './unmarkAsFavorite'
+import { handleDeleteEpisode } from './delete'
+import { handleUpdateEpisode } from './update'
+import { searchEpisode } from './search'
 
 export async function episodeHandler(app: FastifyInstance) {
   app.addHook('preHandler', authMiddleware)
@@ -16,8 +19,14 @@ export async function episodeHandler(app: FastifyInstance) {
   app.post('/audio', handleUploadAudio)
   app.post('/favorite/:episodeId', handleMarkAsFavorite)
   app.delete('/favorite/:episodeId', handleUnmarkAsFavorite)
+  app.delete('/:episodeId', handleDeleteEpisode)
   app.get('/', handleFindAllEpisode)
   app.get('/:episodeId', handleFindOneEpisode)
   app.get('/play/:audioFileId', handlePlayAudio)
   app.get('/list', handleListUserHome)
+
+  app.get('/search/:search', searchEpisode)
+  app.get('/list', handleListUserHome)
+
+  app.patch('/:episodeId', handleUpdateEpisode)
 }

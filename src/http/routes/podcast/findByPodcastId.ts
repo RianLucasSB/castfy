@@ -20,22 +20,28 @@ export async function findPodcastById(req: FastifyRequest, res: FastifyReply) {
     },
   })
 
-
-  if(!podcast){
-    return res.status(404).send(notFound(new BadRequestError(`Podcast não encontrado`)))
+  if (!podcast) {
+    return res
+      .status(404)
+      .send(notFound(new BadRequestError(`Podcast não encontrado`)))
   }
 
-  const podcastImage = await prisma.image.findUnique({where: {id: podcast.imageId}})
+  const podcastImage = await prisma.image.findUnique({
+    where: { id: podcast.imageId },
+  })
 
+  const episodes = await Promise.all(
+    podcast.episodes.map(async (episode) => {
+      const image = await prisma.image.findUnique({
+        where: { id: episode.imageId },
+      })
 
-  const episodes = await Promise.all(podcast.episodes.map(async episode => {
-    const image = await prisma.image.findUnique({where: {id: episode.imageId}})
-    
-    return {
-      imageUrl: image?.url,
-      ...episode
-    }
-  }))
+      return {
+        imageUrl: image?.url,
+        ...episode,
+      }
+    }),
+  )
 
   res.status(201).send({
     id: podcast.id,

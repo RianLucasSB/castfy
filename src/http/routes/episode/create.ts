@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { prisma } from '../../../lib/prisma'
 import { s3Client } from '../../../lib/s3'
 import { Upload } from '@aws-sdk/lib-storage'
+import { Category } from '@prisma/client'
 
 export async function createEpisodeHandler(
   req: FastifyRequest,
@@ -14,6 +15,7 @@ export async function createEpisodeHandler(
     fileId: z.string(),
     title: z.string(),
     description: z.string(),
+    categories: z.array(z.nativeEnum(Category)),
   })
 
   let imageId = ''
@@ -50,7 +52,7 @@ export async function createEpisodeHandler(
     }
   }
 
-  const { description, fileId, title } = episodeBody.parse(body)
+  const { description, fileId, title, categories } = episodeBody.parse(body)
 
   const userId = req.headers.userId
 
@@ -77,6 +79,7 @@ export async function createEpisodeHandler(
       podcastId: podcast.id,
       audioFileId: audioFile.id,
       imageId,
+      categories,
     },
   })
 

@@ -69,6 +69,7 @@ model Episode {
   audioFile      AudioFile                  @relation(fields: [audioFileId], references: [id])
   audioFileId    String
   usersFavorites FavoritesEpisodesOnUsers[]
+  categories     Category[]                 @default([])
 }
 
 model FavoritesEpisodesOnUsers {
@@ -91,4 +92,39 @@ enum Gender {
   MALE
   FEMALE
   NON_BINARY @map("NON-BINARY")
+}
+
+enum Category {
+  TRUE_CRIME
+  COMEDY
+  NEWS
+  EDUCATION
+  TECHNOLOGY
+  SPORTS
+  HEALTH
+  BUSINESS
+  HISTORY
+  FICTION
+  STORYTELLING
+  SELF_IMPROVEMENT
+  POLITICS
+  MUSIC
+  SCIENCE
+  PHILOSOPHY
+  TRAVEL
+  LANGUAGE
+  CULTURE
+  RELIGION
+  ART
+  KIDS
+  ENVIRONMENT
+  ANIME
+  GAMING
+  FINANCE
+  LITERATURE
+  RELATIONSHIPS
+  FOOD
+  DOCUMENTARY
+  ENTERTAINMENT
+  INTERVIEWS
 }

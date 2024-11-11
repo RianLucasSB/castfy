@@ -17,6 +17,7 @@ export async function handleListUserHome(
           id: true,
           description: true,
           title: true,
+          categories: true,
           podcast: {
             select: {
               description: true,
@@ -43,6 +44,7 @@ export async function handleListUserHome(
       id: true,
       description: true,
       title: true,
+      categories: true,
       podcast: {
         select: {
           description: true,

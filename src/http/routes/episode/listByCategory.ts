@@ -1,10 +1,18 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { prisma } from '../../../lib/prisma'
+import { z } from 'zod'
+import { Category } from '@prisma/client'
 
-export async function handleFindAllEpisode(
+export async function handleListByCategory(
   req: FastifyRequest,
   res: FastifyReply,
 ) {
+  const paramsBody = z.object({
+    categories: z.array(z.nativeEnum(Category)),
+  })
+
+  const { categories } = paramsBody.parse(req.query)
+
   const episodes = await prisma.episode.findMany({
     select: {
       id: true,
@@ -26,6 +34,11 @@ export async function handleFindAllEpisode(
         select: {
           url: true,
         },
+      },
+    },
+    where: {
+      categories: {
+        hasSome: categories,
       },
     },
   })

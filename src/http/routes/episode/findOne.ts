@@ -40,6 +40,7 @@ export async function handleFindOneEpisode(
     description: episode?.description,
     audioUrl: audioFile?.url,
     imageUrl: imageFile?.url,
+    categories: episode.categories,
     podcast: {
       name: podcast?.name,
       imageUrl: podcastImage?.url,
