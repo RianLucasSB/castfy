@@ -26,7 +26,6 @@ export async function episodeHandler(app: FastifyInstance) {
   app.get('/list', handleListUserHome)
 
   app.get('/search/:search', searchEpisode)
-  app.get('/list', handleListUserHome)
 
   app.patch('/:episodeId', handleUpdateEpisode)
 }
