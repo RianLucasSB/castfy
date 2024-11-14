@@ -15,7 +15,7 @@ export async function createEpisodeHandler(
     fileId: z.string(),
     title: z.string(),
     description: z.string(),
-    categories: z.array(z.nativeEnum(Category)),
+    categories: z.string(),
   })
 
   let imageId = ''
@@ -72,6 +72,9 @@ export async function createEpisodeHandler(
 
   if (!audioFile) return
 
+  const parsedCategoriesZod = z.array(z.nativeEnum(Category))
+  const parsedCategories = parsedCategoriesZod.parse(JSON.parse(categories))
+
   const createdEpisode = await prisma.episode.create({
     data: {
       description,
@@ -79,7 +82,7 @@ export async function createEpisodeHandler(
       podcastId: podcast.id,
       audioFileId: audioFile.id,
       imageId,
-      categories,
+      categories: parsedCategories,
     },
   })
 
