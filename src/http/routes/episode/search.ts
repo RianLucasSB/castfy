@@ -9,14 +9,17 @@ export async function searchEpisode(req: FastifyRequest, res: FastifyReply) {
   })
 
   const queryObj = z.object({
-    categories: z.array(z.nativeEnum(Category)).optional(),
+    categories: z.array(z.nativeEnum(Category)).or(z.nativeEnum(Category)),
   })
 
-  const { categories } = queryObj.parse(req.query)
+  let { categories } = queryObj.parse(req.query)
 
   const { search } = paramsObj.parse(req.params)
 
   if (categories && categories.length > 0) {
+    if (!(categories instanceof Array)) {
+      categories = new Array(categories)
+    }
     const podcasts = await prisma.episode.findMany({
       where: {
         title: {

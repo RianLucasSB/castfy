@@ -12,10 +12,6 @@ export async function handleUpdatePodcast(
   req: FastifyRequest,
   res: FastifyReply,
 ) {
-  const paramsObj = z.object({
-    podcastId: z.string(),
-  })
-
   const episodeBody = z.object({
     name: z.string(),
     description: z.string(),
@@ -23,23 +19,23 @@ export async function handleUpdatePodcast(
 
   const editedPodcast = episodeBody.parse(req.body)
 
-  const { podcastId } = paramsObj.parse(req.params)
+  const userId = req.headers.userId as string
 
   const podcast = await prisma.podcast.findUnique({
-    where: { id: podcastId },
+    where: { userId },
   })
 
   if (!podcast)
-    return badRequest(new InvalidParamError('Podcast id' + podcastId))
-
-  const userId = req.headers.userId as string
+    return badRequest(
+      new InvalidParamError('User with id' + userId + ' has no podcast'),
+    )
 
   if (podcast?.userId !== userId) {
     return forbidden(new ForbiddenError(`Cant edit another user podcast!`))
   }
 
   const updatedPodcast = await prisma.podcast.update({
-    where: { id: podcastId },
+    where: { id: podcast.id },
     data: {
       name: editedPodcast.name,
       description: editedPodcast.description,

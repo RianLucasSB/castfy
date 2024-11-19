@@ -13,5 +13,5 @@ export async function podcastHandler(app: FastifyInstance) {
   app.get('/', findPodcastByUserId)
   app.get('/:podcastId', findPodcastById)
   app.get('/search/:search', searchPodcast)
-  app.patch('/:podcastId', handleUpdatePodcast)
+  app.patch('/', handleUpdatePodcast)
 }

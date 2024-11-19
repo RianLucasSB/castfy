@@ -60,6 +60,6 @@ export async function handleUpdateEpisode(
     title: updatedEpisode?.title,
     description: updatedEpisode?.description,
     imageUrl: updatedEpisode.image?.url,
-    categories: episode.categories,
+    categories: updatedEpisode.categories,
   })
 }
