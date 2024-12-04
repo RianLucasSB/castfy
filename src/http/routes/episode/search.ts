@@ -4,23 +4,20 @@ import { z } from 'zod'
 import { Category } from '@prisma/client'
 
 export async function searchEpisode(req: FastifyRequest, res: FastifyReply) {
-  const paramsObj = z.object({
-    search: z.string(),
-  })
-
   const queryObj = z.object({
-    categories: z.array(z.nativeEnum(Category)).or(z.nativeEnum(Category)),
+    categories: z
+      .union([z.nativeEnum(Category), z.array(z.nativeEnum(Category))])
+      .optional(),
+    search: z.string().optional(),
   })
 
-  let { categories } = queryObj.parse(req.query)
-
-  const { search } = paramsObj.parse(req.params)
+  let { categories, search } = queryObj.parse(req.query)
 
   if (categories && categories.length > 0) {
     if (!(categories instanceof Array)) {
       categories = new Array(categories)
     }
-    const podcasts = await prisma.episode.findMany({
+    const episodes = await prisma.episode.findMany({
       where: {
         title: {
           contains: search,
@@ -30,18 +27,32 @@ export async function searchEpisode(req: FastifyRequest, res: FastifyReply) {
           hasSome: categories,
         },
       },
+      include: {
+        image: {
+          select: {
+            url: true,
+          },
+        },
+      },
     })
-    return res.status(201).send(podcasts)
+    return res.status(201).send(episodes)
   }
 
-  const podcasts = await prisma.episode.findMany({
+  const episodes = await prisma.episode.findMany({
     where: {
       title: {
         contains: search,
         mode: 'insensitive',
       },
     },
+    include: {
+      image: {
+        select: {
+          url: true,
+        },
+      },
+    },
   })
 
-  res.status(201).send(podcasts)
+  res.status(201).send(episodes)
 }

@@ -25,7 +25,7 @@ export async function episodeHandler(app: FastifyInstance) {
   app.get('/play/:audioFileId', handlePlayAudio)
   app.get('/list', handleListUserHome)
 
-  app.get('/search/:search', searchEpisode)
+  app.get('/search', searchEpisode)
 
   app.patch('/:episodeId', handleUpdateEpisode)
 }
